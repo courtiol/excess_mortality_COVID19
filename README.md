@@ -6,6 +6,8 @@
 
 The goal of this small R project is to plot the COVID19 attributed deaths adjusted for baseline mortality and population size.
 
+![ontwitter](image/twitter_snap.png)
+
 ### Why?
 
 Because most people don't know if 100 deaths caused by something is a lot or not.
