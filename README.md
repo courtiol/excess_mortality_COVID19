@@ -30,7 +30,7 @@ Open the project in R and run the code in `main.R`
 
 - Does it make sense to correct for the baseline mortality in each countries (current approach) versus to a common baseline?
 
-To some degree _Yes_, as it reflect the overall health situation in a country... but only to some degrees.
+To some degree _Yes_, as it reflect the overall health situation in a country... but only to some degree.
 
 
 
