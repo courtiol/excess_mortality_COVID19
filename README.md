@@ -20,7 +20,11 @@ So for example, a value of 50 would imply that if 100 normal deaths used to occu
 
 ### Caveats
 
-Some countries (including Italy) seem to underreport death by COVID19 because for many deaths occurying outside hospitals the exact cause of death is not known. (We will be able to look at that when overall death rates will be known.)
+Some countries (including Italy) seem to underreport death by COVID19. This is because for many deaths occurying outside hospitals the exact cause of death is not known. (We will be able to look at that when overall death rates will be known.)
+
+### How to reproduce
+
+Open the project in R and run the code in `main.R`
 
 ### Open questions
 
