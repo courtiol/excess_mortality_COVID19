@@ -23,7 +23,7 @@ mortality_plot <- data_plot_mortality %>%
         plot.tag = element_text(face = "italic", size = 10, colour = "red", hjust = 0),
         plot.tag.position = c(0, 1),
   ) +
-  scale_x_continuous(limits = c(0, 50)) +
+  scale_x_continuous(limits = c(0, 70)) +
   scale_fill_hue(h.start = 220, c = 80)
 
 ggsave(plot = mortality_plot, filename = paste0("./figures/extra_mortality_", today, ".png"), width = 9, height = 6, units = "in")
