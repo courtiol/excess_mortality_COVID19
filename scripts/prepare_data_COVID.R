@@ -15,17 +15,17 @@ stopifnot(is_tibble(data_COVID_raw))
 rm(data_COVID_basefile)
 
 data_COVID_raw %>%
-  rename(Country = "Countries and territories") %>%
-  mutate(iso2c = case_when(GeoId %in% unique(codelist$iso2c) ~ GeoId, ## we fix the country codes
-                           GeoId == "UK" ~ "GB",
-                           GeoId == "XK" ~ "XK",
-                           GeoId == "EL" ~ "GR",
+  rename(Country = "countriesAndTerritories") %>%
+  mutate(iso2c = case_when(geoId %in% unique(codelist$iso2c) ~ geoId, ## we fix the country codes
+                           geoId == "UK" ~ "GB",
+                           geoId == "XK" ~ "XK",
+                           geoId == "EL" ~ "GR",
                            TRUE ~ NA_character_),
-         date = lubridate::ymd(paste(Year, Month, Day, sep = "/")),
+         date = lubridate::ymd(paste(year, month, day, sep = "/")),
          latest = max(date),
-         date_label = paste(lubridate::month(Month, label = TRUE, abbr = FALSE), Day, sep = " ")) %>%
-  group_by(Country, DateRep) %>%
-  slice_max(Cases) %>% ## we remove some duplicates
+         date_label = paste(lubridate::month(month, label = TRUE, abbr = FALSE), day, sep = " ")) %>%
+  group_by(Country, date_label) %>%
+  slice_max(cases) %>% ## we remove some duplicates
   ungroup() -> data_COVID
 
 ## we create the continents:
@@ -44,3 +44,4 @@ data_COVID %>%
   print()
 
 rm(data_COVID_raw)
+

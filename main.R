@@ -27,6 +27,6 @@ today <- Sys.Date()
 ## quick look at the numbers:
   data_plot_mortality %>%
     #slice(1:30) %>%
-    select(country, Deaths,  total_death_day, extra_mortality) %>%
+    select(country, deaths,  total_death_day, extra_mortality) %>%
     print(n = Inf)
   
