@@ -7,7 +7,7 @@
 The goal of this small R project is to plot the COVID19 attributed deaths adjusted for baseline mortality and population size.
 
 <a href=https://twitter.com/alexcourtiol>
-<img src="image/twitter_snap.png" alt="From twitter" style="width:500px;height:600px;">
+<img src="image/twitter_snap.png" alt="From twitter" align="right" width="450">
 </a>
 
 ### Why?
@@ -18,7 +18,7 @@ The motivation for such plots is that most people don't know if X deaths caused 
 
 Here I express the number of _reported_ COVID19 deaths compared to 100 "normal" deaths.
 
-So for example, a value of 50 would imply that if 100 normal deaths used to occur in a city, then we would observe 150 deaths in total (100 normal + 50 COVID19 ones) assuming that normal deaths have not changed.
+For example, a value of 50 would imply that if 100 normal deaths used to occur in a city, then we would observe 150 deaths in total (100 normal + 50 COVID19 ones) assuming that normal deaths have not changed.
 
 This is more informative than expressing the result as a percentage: if the COVID deaths reach very large numbers, we will still see on this graph such an increase progressing linearly. Instead, expressed as a percentage, the death toll would just slowly converge towards 100%.
 
