@@ -22,11 +22,19 @@ For example, a value of 50 would imply that if 100 normal deaths used to occur i
 
 This is more informative than expressing the result as a percentage: if the COVID deaths reach very large numbers, we will still see on this graph such an increase progressing linearly. Instead, expressed as a percentage, the death toll would just slowly converge towards 100%.
 
-If you want to instead express the scale as the odd of dying from COVID, just divide by 100: $\frac{X / (100 + X)}{100 / (100 + X)} = \frac{X}{100}$.  For example, with 50 COVID death per 100 normal ones,
-the odd of COVID death is thus $\frac{50}{100} = 0.5$.
+If you still want to express such number as a percentage, just do:
 
-If you still want to express such numbers as percentages, just do $100 \times \frac{X}{ 100 + X}$. For example, with 50 COVID death per 100 normal ones,
-the percentage of COVID death is thus $100 \times \frac{50}{150} = 33.333\%$.
+<a href="https://www.codecogs.com/eqnedit.php?latex=\fn_phv&space;100&space;\times&space;\frac{X}{&space;100&space;&plus;&space;X}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\fn_phv&space;100&space;\times&space;\frac{X}{&space;100&space;&plus;&space;X}" title="100 \times \frac{X}{ 100 + X}" /></a>
+
+For example, with 50 COVID death per 100 normal ones,
+the percentage of COVID death is thus 100 * 50/150 = 33.333%.
+
+If instead you want to instead express values along the x-axis as the odd of dying from COVID, just divide the value X you read on the axis by 100:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\fn_phv&space;\frac{X&space;/&space;(100&space;&plus;&space;X)}{100&space;/&space;(100&space;&plus;&space;X)}&space;=&space;\frac{X}{100}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\dpi{100}&space;\fn_phv&space;\frac{X&space;/&space;(100&space;&plus;&space;X)}{100&space;/&space;(100&space;&plus;&space;X)}&space;=&space;\frac{X}{100}" title="\frac{X / (100 + X)}{100 / (100 + X)} = \frac{X}{100}" /></a>
+
+For example, with 50 COVID death per 100 normal ones,
+the odd of COVID death is thus 50/100 = 0.5.
 
 ### Caveats
 
