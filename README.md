@@ -22,11 +22,11 @@ For example, a value of 50 would imply that if 100 normal deaths used to occur i
 
 This is more informative than expressing the result as a percentage: if the COVID deaths reach very large numbers, we will still see on this graph such an increase progressing linearly. Instead, expressed as a percentage, the death toll would just slowly converge towards 100%.
 
-In other words the scale corresponds to 100 times the odds ratio between the odd of dying from COVID and the odd of dying from anything else.
+If you want to instead express the scale as the odd of dying from COVID, just divide by 100: $\frac{X / (100 + X)}{100 / (100 + X)} = \frac{X}{100}$.  For example, with 50 COVID death per 100 normal ones,
+the odd of COVID death is thus $\frac{50}{100} = 0.5$.
 
-If you still want to express such numbers as percentages, just apply the transformation X% = 100 * (X / (100 + X)).
-With 50 COVID death per 100 normal ones,
-this is thus 100 * (50/150) = 33.333%.
+If you still want to express such numbers as percentages, just do $100 \times \frac{X}{ 100 + X}$. For example, with 50 COVID death per 100 normal ones,
+the percentage of COVID death is thus $100 \times \frac{50}{150} = 33.333\%$.
 
 ### Caveats
 
