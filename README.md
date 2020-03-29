@@ -24,7 +24,8 @@ This is more informative than expressing the result as a percentage: if the COVI
 
 In other words the scale corresponds to 100 times the odds ratio between the odd of dying from COVID and the odd of dying from anything else.
 
-If you still want to express such numbers as percentages, just apply the transformation X% = 100 * (X / (100 + X)). With 50 COVID death per 100 normal ones,
+If you still want to express such numbers as percentages, just apply the transformation X% = 100 * (X / (100 + X)).
+With 50 COVID death per 100 normal ones,
 this is thus 100 * (50/150) = 33.333%.
 
 ### Caveats
@@ -43,6 +44,8 @@ Open the project in R and run the code in `main.R`
 
 ### Help & feedbacks wanted!
 
-If you find that this project interesting an idea worth pursuing, please let me know by liking, RT or messaging on Twitter (@alexcourtiol). Developing is always more fun when it becomes a collaborative work. So please also email me (or leave an issue) if you want to get involved!
+If you find that this project interesting an idea worth pursuing, please let me know by liking, RT or messaging on Twitter (@alexcourtiol).
+
+Developing is always more fun when it becomes a collaborative work, so please also email me (or leave an issue) if you want to get involved!
 
 
