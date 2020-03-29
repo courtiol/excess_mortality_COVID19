@@ -11,7 +11,7 @@ mortality_plot <- data_plot_mortality %>%
   labs(tag = paste0("Update ", Sys.Date()),
        title = "Deaths by COVID-19 on the worst day, relative to baseline mortality",
        subtitle = "Most affected 30 countries with more than 2,000,000 inhabitants",
-       caption = "Data processed by @alexcourtiol and downloaded from:\n - European Centre for Disease Prevention and Control for death counts attributed to COVID19 (direct download)\n - World Bank for yearly mortality per country (via R package {wbstats})",
+       caption = "Data processed by @alexcourtiol and downloaded from:\n - European Centre for Disease Prevention and Control for death counts attributed to COVID19 (direct download)\n - World Bank for yearly mortality per country (via R package {wbstats})\n For the R code and explanations on how to interpret the x-axis, please visit https://github.com/courtiol/excess_mortality_COVID19",
        x = "Deaths caused by COVID-19 per 100 deaths due to all other causes", y = "",
        fill = "") +
   theme_minimal(base_size = 12) +
