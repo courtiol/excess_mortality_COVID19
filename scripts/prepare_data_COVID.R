@@ -23,6 +23,14 @@ data_COVID_raw %>%
                            TRUE ~ NA_character_),
          date = lubridate::ymd(paste(year, month, day, sep = "/")),
          latest = max(date),
+         time_since_today = as.numeric(today - date),
+         time_since_today_d = case_when(time_since_today == 0 ~ "now",
+                                        time_since_today < 7 ~ "within 7 days",
+                                        time_since_today < 15 ~ "within 14 days",
+                                        time_since_today >= 15 ~ "later",
+                                        TRUE ~ NA_character_
+                                        ),
+         time_since_today_d = factor(time_since_today_d, levels = c("now", "within 7 days", "within 14 days", "later")),
          date_label = paste(lubridate::month(month, label = TRUE, abbr = FALSE), day, sep = " ")) %>%
   group_by(Country, date_label) %>%
   slice_max(cases) %>% ## we remove some duplicates
