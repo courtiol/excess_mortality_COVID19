@@ -14,8 +14,11 @@ mortality_plot <- data_plot_mortality %>%
        caption = "Data processed by @alexcourtiol and downloaded from:\n - European Centre for Disease Prevention and Control for death counts attributed to COVID19 (direct download)\n - World Bank for yearly mortality per country (via R package {wbstats})\n For the R code and explanations on how to interpret the x-axis, please visit https://github.com/courtiol/excess_mortality_COVID19",
        x = "Deaths caused by COVID-19 per 100 deaths due to all other causes", y = "",
        fill = "Continent",
-       colour = "Days since worst") +
-  scale_colour_manual(values = c("red", "orange", "blue"), guide = FALSE) +
+       colour = "Date of worst day") +
+  scale_colour_manual(values = c("red", "orange", "blue", "darkgreen"),
+                      drop = FALSE,
+                      guide = guide_legend(override.aes = list(label = levels(data_plot_mortality$time_since_today_d)),
+                                           label = FALSE, nrow = 1, keywidth = 1, unit = "cm")) +
   theme_minimal(base_size = 12) +
   theme(panel.grid.major.y = element_blank(),
         plot.caption = element_text(hjust = 0, colour = "darkgrey"),
@@ -24,8 +27,9 @@ mortality_plot <- data_plot_mortality %>%
         plot.subtitle = element_text(hjust = 0.5, face = "italic"),
         plot.tag = element_text(face = "italic", size = 10, colour = "red", hjust = 0),
         plot.tag.position = c(0, 1),
-        legend.key.width = unit(0.2, "cm"),
-        legend.title = element_text(size = 10, face = "italic", margin = margin(b = 0.25, unit = "cm")),
+        legend.key.width = unit(0.4, "cm"),
+        legend.key.height = unit(0.4, "cm"),
+        legend.title = element_text(size = 9, face = "italic", margin = margin(b = 0.1, unit = "cm")),
         legend.text = element_text(size = 8)
   ) +
   scale_x_continuous(limits = c(0, 80)) +

@@ -14,6 +14,11 @@ data_COVID_raw <- tryCatch(readxl::read_xlsx(paste0(data_COVID_basefile, ".xlsx"
 stopifnot(is_tibble(data_COVID_raw))
 rm(data_COVID_basefile)
 
+levels_time_since_today <- c("last day",
+                             "last week",
+                             "last 14d",
+                             ">14 days")
+
 data_COVID_raw %>%
   rename(Country = "countriesAndTerritories") %>%
   mutate(iso2c = case_when(geoId %in% unique(codelist$iso2c) ~ geoId, ## we fix the country codes
@@ -23,14 +28,14 @@ data_COVID_raw %>%
                            TRUE ~ NA_character_),
          date = lubridate::ymd(paste(year, month, day, sep = "/")),
          latest = max(date),
-         time_since_today = as.numeric(today - date),
-         time_since_today_d = case_when(time_since_today == 0 ~ "now",
-                                        time_since_today < 7 ~ "within 7 days",
-                                        time_since_today < 15 ~ "within 14 days",
-                                        time_since_today >= 15 ~ "later",
+         time_since_today = as.numeric(as.Date(today) - date),
+         time_since_today_d = case_when(time_since_today == 0  ~ levels_time_since_today[1],
+                                        time_since_today  < 7  ~ levels_time_since_today[2],
+                                        time_since_today  < 15 ~ levels_time_since_today[3],
+                                        time_since_today >= 15 ~ levels_time_since_today[4],
                                         TRUE ~ NA_character_
                                         ),
-         time_since_today_d = factor(time_since_today_d, levels = c("now", "within 7 days", "within 14 days", "later")),
+         time_since_today_d = factor(time_since_today_d, levels = levels_time_since_today),
          date_label = paste(lubridate::month(month, label = TRUE, abbr = FALSE), day, sep = " ")) %>%
   group_by(Country, date_label) %>%
   slice_max(cases) %>% ## we remove some duplicates
