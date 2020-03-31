@@ -2,7 +2,7 @@ library(wbstats)
 library(countrycode)
 library(tidyverse)
 
-today <- Sys.Date()
+today <- paste(Sys.Date())
 
 ## create data_pop:
   if (!file.exists("data/data_pop.rda")) {

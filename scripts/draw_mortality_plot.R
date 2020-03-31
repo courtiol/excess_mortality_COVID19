@@ -8,7 +8,7 @@ mortality_plot <- data_plot_mortality %>%
   geom_col() + 
   geom_text(aes(colour = time_since_today_d), size = 2, nudge_x = 0.2, hjust = 0) +
   geom_text(aes(label = delta_ranks, x = 0), size = 2.5, hjust = 1, fontface = "bold") +
-  labs(tag = paste0("Update ", Sys.Date()),
+  labs(tag = paste0("Update ", today),
        title = "Deaths by COVID-19 on the worst day, relative to baseline mortality",
        subtitle = "Most affected 30 countries with more than 2,000,000 inhabitants",
        caption = "Data processed by @alexcourtiol and downloaded from:\n - European Centre for Disease Prevention and Control for death counts attributed to COVID19 (direct download)\n - World Bank for yearly mortality per country (via R package {wbstats})\n For the R code and explanations on how to interpret the x-axis, please visit https://github.com/courtiol/excess_mortality_COVID19",

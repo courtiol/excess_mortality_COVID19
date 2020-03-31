@@ -16,12 +16,12 @@ rm(full_data_raw)
 
 ## update ranks in list:
 load("data/list_ranks.rda")
-list_ranks[[paste(Sys.Date())]] <- data_plot_mortality_temp$country
+list_ranks[[today]] <- data_plot_mortality_temp$country
 save(list_ranks, file = "data/list_ranks.rda")
 
 ## compute rank changes and add to data:
-ranks_now <- 1:length(list_ranks[[paste(Sys.Date())]])
-ranks_change <- -1*(ranks_now - match(list_ranks[[paste(Sys.Date())]], list_ranks[[paste(Sys.Date() - 1)]]))
+ranks_now <- 1:length(list_ranks[[today]])
+ranks_change <- -1*(ranks_now - match(list_ranks[[today]], list_ranks[[paste(as.Date(today) - 1)]]))
 ranks_change <- case_when(ranks_change > 0 ~ paste0(ranks_change, "↑ "),
                           ranks_change < 0 ~ paste0(-ranks_change, "↓ "),
                           ranks_change == "0" ~ "= ",
