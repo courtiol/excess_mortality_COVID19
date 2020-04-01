@@ -33,6 +33,6 @@ mortality_plot <- data_plot_mortality %>%
         legend.text = element_text(size = 8)
   ) +
   scale_x_continuous(limits = c(0, 80)) +
-  scale_fill_hue(h.start = 220, c = 80)
+  scale_fill_hue(h.start = 220, c = 80,  drop = FALSE)
 
 ggsave(plot = mortality_plot, filename = paste0("./figures/extra_mortality_", today, ".png"), width = 9, height = 6, units = "in")
