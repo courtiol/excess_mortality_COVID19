@@ -21,18 +21,18 @@ save(list_ranks, file = "data/list_ranks.rda")
 
 ## compute rank changes and add to data:
 ranks_now <- 1:length(list_ranks[[today]])
-ranks_change <- -1*(ranks_now - match(list_ranks[[today]], list_ranks[[paste(as.Date(today) - 1)]]))
-ranks_change <- case_when(ranks_change > 0 ~ paste0(ranks_change, "↑ "),
-                          ranks_change < 0 ~ paste0(-ranks_change, "↓ "),
-                          ranks_change == "0" ~ "= ",
-                          TRUE ~ "new")
+ranks_change_raw <- -1*(ranks_now - match(list_ranks[[today]], list_ranks[[paste(as.Date(today) - 1)]]))
+ranks_change_pretty <- case_when(ranks_change_raw > 0 ~ paste0(ranks_change_raw, "↑ "),
+                                 ranks_change_raw < 0 ~ paste0(-ranks_change_raw, "↓ "),
+                                 ranks_change_raw == "0" ~ "= ",
+                                 TRUE ~ "new")
 rm(list_ranks)
 
 data_plot_mortality_temp %>%
-  bind_cols(delta_ranks = ranks_change) %>%
+  bind_cols(ranks_change = ranks_change_raw, delta_ranks = ranks_change_pretty) %>%
   mutate(country_label = paste0(country, " - ", 1:n()), ## country label
          country_label = fct_reorder(country_label, extra_mortality),
          continent = fct_reorder(continent, -extra_mortality, min)) -> data_plot_mortality
 
-rm(list = c("data_plot_mortality_temp", "ranks_now", "ranks_change"))
+rm(list = c("data_plot_mortality_temp", "ranks_now", "ranks_change_raw", "ranks_change_pretty"))
 

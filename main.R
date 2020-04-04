@@ -25,8 +25,23 @@ today <- paste(Sys.Date())
   mortality_plot
 
 ## quick look at the numbers:
-  data_plot_mortality %>%
-    #slice(1:30) %>%
-    select(country, deaths,  total_death_day, extra_mortality) %>%
-    print(n = Inf)
-  
+  ### worst 30:
+    data_plot_mortality %>%
+      slice(1:30) %>%
+      select(country, delta_ranks, deaths,  total_death_day, extra_mortality) %>%
+      print(n = Inf)
+    
+  ### new in worst 30:
+    data_plot_mortality %>%
+      mutate(new_rank = row_number(),
+             old_rank = row_number() + ranks_change) %>%
+      filter(old_rank > 30, new_rank < 31) %>%
+      select(country, new_rank, old_rank,  total_death_day, extra_mortality)
+    
+  ### leaving worst 20:
+    data_plot_mortality %>%
+      mutate(new_rank = row_number(),
+             old_rank = row_number() + ranks_change) %>%
+      filter(new_rank > 30, old_rank < 31) %>%
+      select(country, new_rank, old_rank,  total_death_day, extra_mortality)
+    
