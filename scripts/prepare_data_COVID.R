@@ -47,6 +47,9 @@ data_COVID %>%
                              "Europe",
                              countrycode(iso2c, origin = "iso2c", destination = "continent"))) -> data_COVID
 
+## fix France as they added 884 extra cases caused by nursing homes:
+data_COVID[data_COVID$Country == "France" & data_COVID$date == "2020-04-04", "deaths"] <- 1120
+
 ## checks:
 print("data_COVID countries not in WB:")
 
