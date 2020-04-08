@@ -5,11 +5,12 @@ mortality_plot <- data_plot_mortality %>%
       y = country_label,
       label = date_label,
       fill = continent) +
-  geom_col() + 
+  geom_col(alpha = 0.6) + 
+  geom_col(aes(x = extra_mortality_today)) +
   geom_text(aes(colour = time_since_today_d), size = 2, nudge_x = 0.2, hjust = 0) +
   geom_text(aes(label = delta_ranks, x = 0), size = 2.5, hjust = 1, fontface = "bold") +
   labs(tag = paste0("Update ", today),
-       title = "Deaths by COVID-19 on the worst day, relative to baseline mortality",
+       title = "Deaths by COVID-19 on the last & worst day (dull & bright colour)\nrelative to baseline mortality",
        subtitle = "Most affected 30 countries with more than 2,000,000 inhabitants",
        caption = "Data processed by @alexcourtiol and downloaded from:\n - European Centre for Disease Prevention and Control for death counts attributed to COVID19 (direct download)\n - World Bank for yearly mortality per country (via R package {wbstats})\n For the R code and explanations on how to interpret the x-axis, please visit https://github.com/courtiol/excess_mortality_COVID19",
        x = "Deaths caused by COVID-19 per 100 deaths due to all other causes", y = "",
@@ -32,6 +33,6 @@ mortality_plot <- data_plot_mortality %>%
         legend.title = element_text(size = 9, face = "italic", margin = margin(b = 0.1, unit = "cm")),
         legend.text = element_text(size = 8)) +
   scale_x_continuous(breaks = seq(0, 100, by = 20), limits = c(0, 100)) +
-  scale_fill_hue(h.start = 220, c = 80,  drop = FALSE)
+  scale_fill_hue(h.start = 220, c = 80, drop = FALSE)
 
 ggsave(plot = mortality_plot, filename = paste0("./figures/extra_mortality_", today, ".png"), width = 9, height = 6, units = "in")

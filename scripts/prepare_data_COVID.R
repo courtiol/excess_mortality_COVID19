@@ -27,7 +27,6 @@ data_COVID_raw %>%
                            geoId == "EL" ~ "GR",
                            TRUE ~ NA_character_),
          date = lubridate::ymd(paste(year, month, day, sep = "/")),
-         latest = max(date),
          time_since_today = as.numeric(as.Date(today) - date),
          time_since_today_d = case_when(time_since_today == 0  ~ levels_time_since_today[1],
                                         time_since_today  < 7  ~ levels_time_since_today[2],
@@ -37,6 +36,8 @@ data_COVID_raw %>%
                                         ),
          time_since_today_d = factor(time_since_today_d, levels = levels_time_since_today),
          date_label = paste(lubridate::month(month, label = TRUE, abbr = FALSE), day, sep = " ")) %>%
+  group_by(Country) %>%
+    mutate(latest = max(date)) %>%
   group_by(Country, date_label) %>%
   slice_max(cases) %>% ## we remove some duplicates
   ungroup() -> data_COVID

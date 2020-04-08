@@ -5,8 +5,11 @@ full_data_raw <- inner_join(data_pop, data_COVID, by = "iso2c")
 full_data_raw %>%
   filter(SP.POP.TOTL > 2e6) %>%
   mutate(baseline_daily_mortality = (SP.DYN.CDRT.IN/1000 * SP.POP.TOTL) / 365,
-         extra_mortality = 100 * deaths/baseline_daily_mortality) %>% ## compute what we want to plot
-  group_by(country) %>%
+         extra_mortality = 100 * deaths/baseline_daily_mortality) -> full_data_processed ## compute what we want to plot
+
+full_data_processed %>%
+ group_by(country) %>%
+  mutate(extra_mortality_today = extra_mortality[date == latest]) %>%
   slice_max(extra_mortality, with_ties = FALSE) %>% ## fetch data for worst day
   ungroup() %>%
   arrange(-extra_mortality) -> data_plot_mortality_temp
