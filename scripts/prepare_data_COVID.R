@@ -37,10 +37,15 @@ data_COVID_raw %>%
          time_since_today_d = factor(time_since_today_d, levels = levels_time_since_today),
          date_label = paste(lubridate::month(month, label = TRUE, abbr = FALSE), day, sep = " ")) %>%
   group_by(Country) %>%
-    mutate(latest = max(date)) %>%
+    arrange(date, .group_by = TRUE) %>%
+    mutate(latest = max(date),
+           deaths_cumul = cumsum(deaths),
+           date_10_deaths_cumul = date[which(deaths_cumul >= 10)[1]]) %>%
   group_by(Country, date_label) %>%
   slice_max(cases) %>% ## we remove some duplicates
-  ungroup() -> data_COVID
+  ungroup() %>%
+  mutate(days_since_10_deaths_cumul = as.numeric(as.Date(today) - date_10_deaths_cumul)) %>%
+  arrange(Country, date) -> data_COVID
 
 ## we create the continents:
 data_COVID %>%

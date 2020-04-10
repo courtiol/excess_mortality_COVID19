@@ -19,16 +19,29 @@ today <- paste(Sys.Date())
 ## create data_plot_mortality:
   source("scripts/prepare_data_plot_mortality.R")
   data_plot_mortality
+  data_plot_mortality_cumul
 
-## draw plot:
+## draw daily plot:
   source("scripts/draw_mortality_plot.R")
-  mortality_plot
+  plot_deaths(data_plot_mortality)
+  ggsave(filename = paste0("./figures/extra_mortality_", today, ".png"), width = 9, height = 6, units = "in")
+
+## draw cumul plot:
+  plot_deaths(data_plot_mortality_cumul, xmax = 60, cumul = TRUE)
+  ggsave(filename = paste0("./figures/extra_mortality_cumul_", today, ".png"), width = 9, height = 6, units = "in")
+  
 
 ## quick look at the numbers:
   ### worst 30:
     data_plot_mortality %>%
       slice(1:30) %>%
-      select(country, delta_ranks, deaths,  total_death_day, extra_mortality) %>%
+      select(country, delta_ranks, deaths,  total_death_day, extra_mortality, extra_mortality_cumul) %>%
+      print(n = Inf)
+    
+    ### worst 30:
+    data_plot_mortality_cumul %>%
+      slice(1:30) %>%
+      select(country, delta_ranks, deaths,  total_death_day, extra_mortality, extra_mortality_cumul) %>%
       print(n = Inf)
     
   ### new in worst 30:
