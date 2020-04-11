@@ -1,27 +1,22 @@
-plot_deaths <- function(data, xmax = 100, cumul = FALSE) {
+plot_deaths <- function(data_for_plot_major, data_for_plot_minor = NULL, xmax = 100, cumul = FALSE) {
 
-  if (cumul) {
-    data$extra_mortality <- data$extra_mortality_cumul
-  }
-  
-  data %>%
+  data_for_plot_major %>%
     slice_max(extra_mortality, n = 30, with_ties = FALSE) %>% ## top 30 countries
     ggplot() + 
     aes(x = extra_mortality,
         y = country_label,
-        label = date_label,
+        label = days_since_report_cat,
         fill = continent) +
     geom_col(alpha = ifelse(!cumul, 0.6, 1)) +
-    geom_text(aes(label = delta_ranks, x = 0), size = 2.5, hjust = 1, fontface = "bold") +
-    labs(tag = paste0("Update ", today),
+    geom_text(aes(label = diff_ranks_pretty, x = 0), size = 2.5, hjust = 1, fontface = "bold") +
+    labs(tag = paste0("Update ", max(data_for_plot_major$date_report)),
          subtitle = "Most affected 30 countries with more than 2,000,000 inhabitants",
          caption = "Data processed by @alexcourtiol and downloaded from:\n - European Centre for Disease Prevention and Control for death counts attributed to COVID19 (direct download)\n - World Bank for yearly mortality per country (via R package {wbstats})\n For the R code and explanations on how to interpret the x-axis, please visit https://github.com/courtiol/excess_mortality_COVID19",
          x = "Deaths caused by COVID-19 per 100 deaths due to all other causes", y = "",
          fill = "Continent") -> plot_temp
   
-    if (!cumul) {
     plot_temp +
-      geom_col(aes(x = extra_mortality_today)) +
+      geom_col(aes(x = extra_mortality)) +
       geom_text(aes(colour = time_since_today_d), size = 2, nudge_x = 0.2, hjust = 0) +
       scale_colour_manual(values = c("red", "orange", "blue", "darkgreen"),
                           drop = FALSE,
@@ -29,11 +24,11 @@ plot_deaths <- function(data, xmax = 100, cumul = FALSE) {
                                                label = FALSE, nrow = 1, keywidth = 1, unit = "cm")) +
       labs(title = "Deaths by COVID-19 on the last & worst day (dull & bright colour)\nrelative to baseline mortality",
            colour = "Date of worst day") -> plot_temp
-    }
+
   
     if (cumul) {
       plot_temp + 
-        labs(title = "Cumulated deaths by COVID-19 relative to baseline mortality") -> plot_temp
+        labs(title = "Cumulative deaths by COVID-19 relative to baseline mortality") -> plot_temp
       }
   
   plot_temp +

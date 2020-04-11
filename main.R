@@ -2,59 +2,54 @@ library(wbstats)
 library(countrycode)
 library(tidyverse)
 
-today <- paste(Sys.Date())
+## we load the functions:
+  source("scripts/prepare_data_ECDC.R")
+  source("scripts/prepare_data_WB.R")
+  source("scripts/merge_datasets.R")
+  source("scripts/add_rank_changes.R")
+  source("scripts/prepare_data_rank.R")
+  source("scripts/prepare_data_plot.R")
 
-## create data_pop:
-  if (!file.exists("data/data_pop.rda")) {
-    source("scripts/prepare_data_pop.R")
-  } else {
-    load("data/data_pop.rda")
-  }
-  data_pop
+
+library(magrittr)
 
 ## create data_COVID:
-  source("scripts/prepare_data_COVID.R")
-  data_COVID
-
-## create data_plot_mortality:
-  source("scripts/prepare_data_plot_mortality.R")
-  data_plot_mortality
-  data_plot_mortality_cumul
-
-## draw daily plot:
-  source("scripts/draw_mortality_plot.R")
-  plot_deaths(data_plot_mortality)
-  ggsave(filename = paste0("./figures/extra_mortality_", today, ".png"), width = 9, height = 6, units = "in")
-
-## draw cumul plot:
-  plot_deaths(data_plot_mortality_cumul, xmax = 60, cumul = TRUE)
-  ggsave(filename = paste0("./figures/extra_mortality_cumul_", today, ".png"), width = 9, height = 6, units = "in")
+  data_COVID <- prepare_data_ECDC(path_save_data = "./source_data")
   
-
-## quick look at the numbers:
-  ### worst 30:
-    data_plot_mortality %>%
-      slice(1:30) %>%
-      select(country, delta_ranks, deaths,  total_death_day, extra_mortality, extra_mortality_cumul) %>%
-      print(n = Inf)
-    
-    ### worst 30:
-    data_plot_mortality_cumul %>%
-      slice(1:30) %>%
-      select(country, delta_ranks, deaths,  total_death_day, extra_mortality, extra_mortality_cumul) %>%
-      print(n = Inf)
-    
-  ### new in worst 30:
-    data_plot_mortality %>%
-      mutate(new_rank = row_number(),
-             old_rank = row_number() + ranks_change) %>%
-      filter(old_rank > 30, new_rank < 31) %>%
-      select(country, new_rank, old_rank,  total_death_day, extra_mortality)
-    
-  ### leaving worst 20:
-    data_plot_mortality %>%
-      mutate(new_rank = row_number(),
-             old_rank = row_number() + ranks_change) %>%
-      filter(new_rank > 30, old_rank < 31) %>%
-      select(country, new_rank, old_rank,  total_death_day, extra_mortality)
-    
+  ## NOTE: the following Warning is expected:
+  #Warning message:                                                                         
+  #  In countrycode::countrycode(.data$iso2c, origin = "iso2c", destination = "continent") :
+  #  Some values were not matched unambiguously: XK
+  
+  data_COVID
+  
+  
+## create data_baseline_mortality (only if not existing, as it does not change within a year):
+  folder_path <- "./data/"
+  file_name <- "data_baseline_mortality.rda"
+  if (file.exists(paste0(folder_path, file_name))) {
+    load(paste0(folder_path, file_name)) ## it is exist, we just import the data
+  } else {## otherwise, we create them
+    if (!dir.exists(folder_path)) {
+      dir.create(folder_path) ## create folder if missing
+    }
+    data_baseline_mortality <- prepare_data_WB() ## create the data
+    save(data_baseline_mortality, file = paste0(folder_path, file_name)) ## save the data as R object
+  }
+  
+  data_baseline_mortality
+  
+  
+## create the dataset for plotting:
+  data_for_plot_major <- prepare_data_plot(data_ECDC = data_COVID,
+                                           data_WB = data_baseline_mortality,
+                                           type = "daily",
+                                           baseline = "country",
+                                           select = "worst_day")
+  
+  data_for_plot_minor <- prepare_data_plot(data_ECDC = data_COVID,
+                                           data_WB = data_baseline_mortality,
+                                           type = "daily",
+                                           baseline = "country",
+                                           select = "last_day")
+  
