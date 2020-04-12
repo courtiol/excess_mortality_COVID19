@@ -56,6 +56,8 @@ data_COVID %>%
 ## fix lump report of deaths from nursing homes:
 data_COVID[data_COVID$Country == "France" & data_COVID$date == "2020-04-04", "deaths"] <- 1120
 data_COVID[data_COVID$Country == "Belgium" & data_COVID$date == "2020-04-08", "deaths"] <- 162
+data_COVID[data_COVID$Country == "Belgium" & data_COVID$date == "2020-04-11", "deaths"] <- 325
+
 
 
 ## checks:
