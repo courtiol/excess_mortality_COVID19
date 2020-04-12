@@ -1,6 +1,7 @@
 prepare_data_WB <- function(min_pop_size = 2e6) {
   
   ## we download new data from World Bank (WB):
+  message("Downloading fresh data from World Bank, be patient...")
   new_cache <- wbstats::wbcache()
   
   ## we extract data from WB:

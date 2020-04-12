@@ -39,27 +39,15 @@ prepare_data_ECDC <- function(date_of_report = Sys.Date(), path_save_data = NULL
                   continent = dplyr::if_else(.data$iso2c == "XK", ## Kosovo is not present in the list
                                       "Europe",
                                       ## We extract the continents using {countrycode}
-                                      countrycode::countrycode(.data$iso2c, origin = "iso2c", destination = "continent"))) %>%
+                                      countrycode::countrycode(.data$iso2c, origin = "iso2c", destination = "continent")),
+                  continent = factor(continent, levels = c("Africa", "Americas", "Asia", "Europe", "Oceania"))) %>%
     dplyr::select(-.data$geoId, -.data$countryterritoryCode) %>%
     dplyr::rename_all(tolower) -> data_COVID_raw2
   
   ## we improve info about dates:
-  levels_days_since_report <- c("last day",
-                                "last week",
-                                "last 14d",
-                                ">14 days")
-  
   data_COVID_raw2 %>%
     dplyr::mutate(date_report = as.Date(daterep),
-                  days_since_report = as.numeric(date_of_report - as.Date(date_report)),
-                  days_since_report_cat = dplyr::case_when(
-                    days_since_report == 0  ~ levels_days_since_report[1],
-                    days_since_report  < 7  ~ levels_days_since_report[2],
-                    days_since_report  < 15 ~ levels_days_since_report[3],
-                    days_since_report >= 15 ~ levels_days_since_report[4],
-                    TRUE ~ NA_character_),
-                  days_since_report_cat = factor(days_since_report_cat, levels = levels_days_since_report),
-                  date_label = paste(lubridate::month(month, label = TRUE, abbr = FALSE), day, sep = " ")) %>%
+                  days_since_report = date_of_report - as.Date(date_report)) %>%
     dplyr::group_by(.data$country) %>%
     dplyr::mutate(date_report_last = max(date_report)) %>%
     dplyr::ungroup() %>%
@@ -74,8 +62,6 @@ prepare_data_ECDC <- function(date_of_report = Sys.Date(), path_save_data = NULL
     #dplyr::group_by(.data$country, .data$date_report) %>%  ## we remove some rare duplicates -> no longer needed
     #dplyr::slice_max(.data$cases) %>% ## we remove some rare duplicates -> no longer needed
     dplyr::ungroup() %>%
-    dplyr::mutate(days_since_first_10_cumul_deaths = as.numeric(.data$date_report - .data$date_first_10_cumul_deaths),
-                  deaths_cumul_per_day = deaths_cumul/(days_since_first_10_cumul_deaths + 1)) %>%
     dplyr::rename(deaths_daily = .data$deaths) -> data_COVID4
   
   ## we select and reorder the columns for clarity:
@@ -84,21 +70,12 @@ prepare_data_ECDC <- function(date_of_report = Sys.Date(), path_save_data = NULL
                   .data$iso2c,
                   .data$continent,
                   .data$date_report,
-                  .data$date_label,
-                  .data$days_since_report,
-                  .data$days_since_report_cat,
                   .data$date_report_last,
                   .data$cases,
                   .data$deaths_daily,
                   .data$deaths_cumul,
-                  .data$date_first_10_cumul_deaths,
-                  .data$days_since_first_10_cumul_deaths) -> data_COVID
+                  .data$date_first_10_cumul_deaths) -> data_COVID
   
-
-  ## we fix lump report of deaths from nursing homes (does not impact deaths_cumul):
-  data_COVID[data_COVID$country == "France" & data_COVID$date_report == "2020-04-04", "deaths_daily"] <- 1120
-  data_COVID[data_COVID$country == "Belgium" & data_COVID$date_report == "2020-04-08", "deaths_daily"] <- 162
-
   ## output
   data_COVID
 }
