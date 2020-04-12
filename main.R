@@ -23,7 +23,7 @@ today <- paste(Sys.Date())
 
 ## draw daily plot:
   source("scripts/draw_mortality_plot.R")
-  plot_deaths(data_plot_mortality)
+  plot_deaths(data_plot_mortality, xmax = 120)
   ggsave(filename = paste0("./figures/extra_mortality_", today, ".png"), width = 9, height = 6, units = "in")
 
 ## draw cumul plot:
