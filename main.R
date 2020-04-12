@@ -13,7 +13,7 @@ library(magrittr) ## for testing
 
 
 ## create data_COVID:
-  data_COVID <- prepare_data_ECDC(path_save_data = "./source_data",
+  data_COVID <- prepare_data_ECDC(path_save_data = "~/Downloads/COVID19",
                                   date_of_report = Sys.Date() - 10)
   data_COVID
   
